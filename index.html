@@ -1,0 +1,251 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Камень Ножницы Бумага</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#07142d,#0b2248);
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:900px;
+    max-width:95%;
+    text-align:center;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(12px);
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.score{
+    display:flex;
+    justify-content:center;
+    gap:50px;
+    font-size:24px;
+    margin-bottom:20px;
+}
+
+.hands{
+    display:flex;
+    justify-content:center;
+    gap:120px;
+    margin:30px 0;
+}
+
+.hand{
+    font-size:100px;
+    transition:0.3s;
+}
+
+.result{
+    font-size:38px;
+    font-weight:bold;
+    min-height:60px;
+    margin-bottom:20px;
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+button{
+    background:#2b5cff;
+    color:white;
+    border:none;
+    padding:15px 35px;
+    border-radius:15px;
+    cursor:pointer;
+    font-size:18px;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 0 20px rgba(43,92,255,.6);
+}
+
+.info{
+    margin-top:20px;
+    font-size:22px;
+}
+
+.restart{
+    margin-top:20px;
+    display:none;
+}
+
+.final{
+    font-size:28px;
+    margin-top:20px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>✊ Камень ✌ Ножницы ✋ Бумага</h1>
+
+<div class="score">
+    <div>Игрок: <span id="playerScore">0</span></div>
+    <div>Компьютер: <span id="computerScore">0</span></div>
+</div>
+
+<div class="hands">
+    <div>
+        <h3>Игрок</h3>
+        <div class="hand" id="playerHand">❔</div>
+    </div>
+
+    <div>
+        <h3>Компьютер</h3>
+        <div class="hand" id="computerHand">❔</div>
+    </div>
+</div>
+
+<div class="result" id="result">Сделайте выбор</div>
+
+<div class="buttons">
+    <button onclick="play('rock')">Камень</button>
+    <button onclick="play('scissors')">Ножницы</button>
+    <button onclick="play('paper')">Бумага</button>
+</div>
+
+<div class="info">
+    Игра: <span id="round">0</span> / 5
+</div>
+
+<div class="final" id="final"></div>
+
+<button class="restart" id="restartBtn" onclick="restartGame()">
+    Играть снова
+</button>
+
+</div>
+
+<script>
+
+let playerScore = 0;
+let computerScore = 0;
+let round = 0;
+
+const symbols = {
+    rock:"✊",
+    paper:"✋",
+    scissors:"✌"
+};
+
+function play(playerChoice){
+
+    if(round >= 5) return;
+
+    const choices = ["rock","paper","scissors"];
+    const computerChoice =
+        choices[Math.floor(Math.random()*3)];
+
+    document.getElementById("playerHand").textContent =
+        symbols[playerChoice];
+
+    document.getElementById("computerHand").textContent =
+        symbols[computerChoice];
+
+    let resultText = "";
+
+    if(playerChoice === computerChoice){
+        resultText = "DRAW";
+    }
+    else if(
+        (playerChoice==="rock" && computerChoice==="scissors") ||
+        (playerChoice==="paper" && computerChoice==="rock") ||
+        (playerChoice==="scissors" && computerChoice==="paper")
+    ){
+        resultText = "YOU WIN";
+        playerScore++;
+    }
+    else{
+        resultText = "YOU LOSE";
+        computerScore++;
+    }
+
+    round++;
+
+    document.getElementById("result").textContent = resultText;
+    document.getElementById("playerScore").textContent = playerScore;
+    document.getElementById("computerScore").textContent = computerScore;
+    document.getElementById("round").textContent = round;
+
+    if(round === 5){
+
+        let finalMessage = "";
+
+        if(playerScore > computerScore){
+            finalMessage = "🏆 Победил игрок!";
+        }
+        else if(computerScore > playerScore){
+            finalMessage = "🤖 Победил компьютер!";
+        }
+        else{
+            finalMessage = "🤝 Ничья!";
+        }
+
+        document.getElementById("final").textContent =
+            finalMessage;
+
+        document.getElementById("restartBtn").style.display =
+            "inline-block";
+    }
+}
+
+function restartGame(){
+
+    playerScore = 0;
+    computerScore = 0;
+    round = 0;
+
+    document.getElementById("playerScore").textContent = 0;
+    document.getElementById("computerScore").textContent = 0;
+    document.getElementById("round").textContent = 0;
+
+    document.getElementById("result").textContent =
+        "Сделайте выбор";
+
+    document.getElementById("final").textContent = "";
+
+    document.getElementById("playerHand").textContent = "❔";
+    document.getElementById("computerHand").textContent = "❔";
+
+    document.getElementById("restartBtn").style.display =
+        "none";
+}
+
+</script>
+
+</body>
+</html>
+```
